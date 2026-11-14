@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "910585276821",
+    "project_id": "dibi-family",
+    "storage_bucket": "dibi-family.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910585276821:android:89732e055ac6f2d9d56e9c",
+        "android_client_info": {
+          "package_name": "com.example.dibi_family"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfAlk1yHUrthEuNapAeI6cQz4E6v-kopw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
