@@ -1,4 +1,4 @@
-#  Dibi Family
+#  KOTA
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.24.0-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.5.0-0175C2?style=for-the-badge&logo=dart&logoColor=white)
@@ -6,7 +6,7 @@
 ![Android](https://img.shields.io/badge/Android-APK%20Ready-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-Dibi Family est une application mobile pensée pour simplifier la gestion des tontines, des cotisations de groupe et des finances familiales en Côte d’Ivoire et en Afrique de l’Ouest.
+KOTA est une application mobile pensée pour simplifier la gestion des tontines, des cotisations de groupe et des finances familiales en Côte d’Ivoire et en Afrique de l’Ouest.
 
 L’application permet à un groupe de créer une cagnotte, d’inviter des membres, de suivre les contributions, de valider les paiements, de discuter en temps réel et d’atteindre un objectif de façon claire, sécurisée et transparente.
 
@@ -14,7 +14,7 @@ L’application permet à un groupe de créer une cagnotte, d’inviter des memb
 
 ##  Présentation
 
-Dibi Family combine les fonctionnalités d’une tontine digitale, d’un espace de discussion interne et d’une passerelle de paiements dans une même expérience mobile fluide.
+KOTA combine les fonctionnalités d’une tontine digitale, d’un espace de discussion interne et d’une passerelle de paiements dans une même expérience mobile fluide.
 
 Elle a été conçue pour les familles, groupes de travail, amis et associations qui souhaitent organiser des contributions régulières sans friction, tout en gardant une visibilité totale sur les cotisations et les participants.
 
@@ -149,7 +149,7 @@ flutter run --device-id <device_id>
 
 ##  Cas d’usage
 
-Dibi Family s’adresse notamment à :
+KOTA s’adresse notamment à :
 
 - familles organisant des cotisations mensuelles,
 - groupes d’amis qui souhaitent une caisse commune,
