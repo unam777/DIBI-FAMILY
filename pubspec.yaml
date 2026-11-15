@@ -26,11 +26,24 @@ dependencies:
   qr_flutter: ^4.1.0
   share_plus: ^10.0.0
   image_picker: ^1.1.2
+  flutter_svg: ^2.0.10
+  pdf: ^3.10.4
+  printing: ^5.11.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/images/kota_logo.png"
+  min_sdk_android: 21
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/google_g.svg

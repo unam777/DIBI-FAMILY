@@ -30,6 +30,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pdf/pdf.dart' as pw;
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'firebase_options.dart';
 import 'cagnote_repository.dart';
 
@@ -50,7 +54,7 @@ class DibiFamilyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dibi Family',
+      title: 'Kota',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -108,14 +112,14 @@ class AuthGate extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  DibiFamilyLogoWidget(size: 90),
+                  KotaLogoWidget(size: 90),
                   SizedBox(height: 24),
                   Text(
-                    'DIBI FAMILY',
+                    'KOTA',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 2.0,
+                      letterSpacing: 3.0,
                       color: Color(0xFF2E7D32),
                     ),
                   ),
@@ -147,9 +151,10 @@ class AuthGate extends StatelessWidget {
 }
 
 /// Widget Logo Officiel Dibi Family (Style Émeraude avec double D exact de l'image)
-class DibiFamilyLogoWidget extends StatelessWidget {
+/// Widget Logo Officiel KOTA
+class KotaLogoWidget extends StatelessWidget {
   final double size;
-  const DibiFamilyLogoWidget({super.key, this.size = 90.0});
+  const KotaLogoWidget({super.key, this.size = 90.0});
 
   @override
   Widget build(BuildContext context) {
@@ -158,105 +163,107 @@ class DibiFamilyLogoWidget extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(size * 0.28),
-        gradient: const RadialGradient(
-          center: Alignment(-0.2, -0.6),
-          radius: 1.2,
-          colors: [
-            Color(0xFF007A48),
-            Color(0xFF004D2D),
-            Color(0xFF002213),
-          ],
-        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 18,
-            spreadRadius: 2,
-            offset: const Offset(0, 8),
+            color: Colors.black.withOpacity(0.18),
+            blurRadius: 14,
+            spreadRadius: 1,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size * 0.28),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: CustomPaint(
-                painter: _GoldAccentPainter(),
-              ),
-            ),
-            Center(
-              child: SizedBox(
-                width: size * 0.65,
-                height: size * 0.65,
-                child: CustomPaint(
-                  painter: _DoubleDLogoPainter(),
-                ),
-              ),
-            ),
-          ],
+        child: Image.asset(
+          'assets/images/kota_logo.png',
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
         ),
       ),
     );
   }
 }
 
-class _GoldAccentPainter extends CustomPainter {
+class _KotaKLogoPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    final paint = Paint()
-      ..color = const Color(0xFFE5C158)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.8;
-
-    final path = Path();
-    path.moveTo(w * 0.40, h * 0.96);
-    path.cubicTo(w * 0.85, h * 0.96, w * 0.98, h * 0.80, w * 0.96, h * 0.35);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class _DoubleDLogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final w = size.width;
-    final h = size.height;
-
-    final fillPaint = Paint()
+    final whitePaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    // 1. Tige verticale gauche du premier D (forme effilée)
-    final stemPath = Path();
-    stemPath.moveTo(w * 0.22, h * 0.15);
-    stemPath.lineTo(w * 0.28, h * 0.15);
-    stemPath.lineTo(w * 0.28, h * 0.82);
-    stemPath.lineTo(w * 0.22, h * 0.85);
-    stemPath.close();
-    canvas.drawPath(stemPath, fillPaint);
+    // 1. Grande lettre K en Serif élégante, fine et moderne
+    final stem = Path();
+    stem.moveTo(w * 0.22, h * 0.20);
+    stem.lineTo(w * 0.32, h * 0.20);
+    stem.lineTo(w * 0.32, h * 0.82);
+    stem.lineTo(w * 0.22, h * 0.82);
+    stem.close();
+    canvas.drawPath(stem, whitePaint);
 
-    // 2. Première grande boucle D (Crescent 1)
-    final d1Path = Path();
-    d1Path.moveTo(w * 0.32, h * 0.15);
-    d1Path.cubicTo(w * 0.65, h * 0.15, w * 0.68, h * 0.82, w * 0.32, h * 0.82);
-    d1Path.cubicTo(w * 0.58, h * 0.78, w * 0.55, h * 0.20, w * 0.32, h * 0.15);
-    d1Path.close();
-    canvas.drawPath(d1Path, fillPaint);
+    canvas.drawRect(Rect.fromLTWH(w * 0.16, h * 0.18, w * 0.20, h * 0.04), whitePaint);
+    canvas.drawRect(Rect.fromLTWH(w * 0.16, h * 0.80, w * 0.20, h * 0.04), whitePaint);
 
-    // 3. Deuxième grande boucle D (Crescent 2)
-    final d2Path = Path();
-    d2Path.moveTo(w * 0.35, h * 0.15);
-    d2Path.cubicTo(w * 0.98, h * 0.15, w * 1.00, h * 0.85, w * 0.22, h * 0.85);
-    d2Path.cubicTo(w * 0.88, h * 0.80, w * 0.82, h * 0.20, w * 0.35, h * 0.15);
-    d2Path.close();
-    canvas.drawPath(d2Path, fillPaint);
+    final topBranch = Path();
+    topBranch.moveTo(w * 0.30, h * 0.52);
+    topBranch.lineTo(w * 0.58, h * 0.22);
+    topBranch.lineTo(w * 0.70, h * 0.22);
+    topBranch.lineTo(w * 0.40, h * 0.58);
+    topBranch.close();
+    canvas.drawPath(topBranch, whitePaint);
+    canvas.drawRect(Rect.fromLTWH(w * 0.62, h * 0.20, w * 0.14, h * 0.04), whitePaint);
+
+    final bottomBranch = Path();
+    bottomBranch.moveTo(w * 0.35, h * 0.48);
+    bottomBranch.lineTo(w * 0.76, h * 0.82);
+    bottomBranch.lineTo(w * 0.62, h * 0.82);
+    bottomBranch.lineTo(w * 0.28, h * 0.54);
+    bottomBranch.close();
+    canvas.drawPath(bottomBranch, whitePaint);
+    canvas.drawRect(Rect.fromLTWH(w * 0.64, h * 0.80, w * 0.16, h * 0.04), whitePaint);
+
+    // 2. Trois petites piles de pièces d'or qui montent en escalier
+    final goldPaint = Paint()
+      ..color = const Color(0xFFFFD700)
+      ..style = PaintingStyle.fill;
+
+    final goldShadow = Paint()
+      ..color = const Color(0xFFC59B00)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+
+    final p1 = Offset(w * 0.54, h * 0.34);
+    canvas.drawCircle(p1, w * 0.065, goldPaint);
+    canvas.drawCircle(p1, w * 0.065, goldShadow);
+
+    final p2 = Offset(w * 0.65, h * 0.25);
+    canvas.drawCircle(p2, w * 0.065, goldPaint);
+    canvas.drawCircle(p2, w * 0.065, goldShadow);
+
+    final p3 = Offset(w * 0.76, h * 0.16);
+    canvas.drawCircle(p3, w * 0.065, goldPaint);
+    canvas.drawCircle(p3, w * 0.065, goldShadow);
+
+    // 3. Fine flèche dorée qui monte vers la droite (↗)
+    final arrowPaint = Paint()
+      ..color = const Color(0xFFFFD700)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.2
+      ..strokeCap = StrokeCap.round;
+
+    final arrowPath = Path();
+    arrowPath.moveTo(w * 0.48, h * 0.30);
+    arrowPath.lineTo(w * 0.84, h * 0.06);
+
+    arrowPath.moveTo(w * 0.84, h * 0.06);
+    arrowPath.lineTo(w * 0.72, h * 0.06);
+    arrowPath.moveTo(w * 0.84, h * 0.06);
+    arrowPath.lineTo(w * 0.84, h * 0.18);
+
+    canvas.drawPath(arrowPath, arrowPaint);
   }
 
   @override
@@ -269,25 +276,55 @@ class ModernGoogleLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: size,
       height: size,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
+      child: SvgPicture.asset(
+        'assets/images/google_logo.svg',
+        width: size,
+        height: size,
+        fit: BoxFit.contain,
       ),
-      child: Center(
-        child: Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png',
-          width: size * 0.85,
-          height: size * 0.85,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return CustomPaint(
-              size: Size(size, size),
-              painter: _GoogleGLogoPainter(),
-            );
-          },
+    );
+  }
+}
+
+class GoogleButton extends StatelessWidget {
+  final VoidCallback onTap;
+  const GoogleButton({super.key, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton(
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          side: const BorderSide(color: Color(0xFFE5E7EB)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/google_g.svg',
+              width: 22,
+              height: 22,
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Continuer avec Google',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -529,10 +566,10 @@ class _PasswordlessAuthScreenState extends State<PasswordlessAuthScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const DibiFamilyLogoWidget(size: 90),
+                  const KotaLogoWidget(size: 90),
                   const SizedBox(height: 24),
                   const Text(
-                    'Inscription Dibi Family',
+                    'Bienvenue sur KOTA',
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -658,34 +695,8 @@ class _PasswordlessAuthScreenState extends State<PasswordlessAuthScreen> {
                               ],
                             ),
                             const SizedBox(height: 16),
-                            OutlinedButton(
-                              onPressed: _isLoading ? null : _seConnecterAvecGoogle,
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(54),
-                                elevation: 1,
-                                shadowColor: Colors.black.withOpacity(0.06),
-                                side: const BorderSide(color: Color(0xFFDADCE0), width: 1.3),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const ModernGoogleLogoWidget(size: 24),
-                                  const SizedBox(width: 14),
-                                  const Text(
-                                    'Continuer avec Google',
-                                    style: TextStyle(
-                                      fontSize: 15.5,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF3C4043),
-                                      letterSpacing: 0.1,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            GoogleButton(
+                              onTap: _isLoading ? () {} : _seConnecterAvecGoogle,
                             ),
                           ],
                         ),
@@ -1862,6 +1873,24 @@ class OverviewTab extends StatelessWidget {
               ),
             ),
           ],
+        ),
+
+        const SizedBox(height: 12),
+        ElevatedButton.icon(
+          onPressed: () => _genererEtPartagerRapportPdf(
+            cagnoteName: cagnoteName,
+            targetAmount: targetAmount,
+            totalCollected: totalCollected,
+            members: members,
+            paidList: paidList,
+          ),
+          icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
+          label: const Text('Télécharger le rapport financier (PDF)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF0B5C3F),
+            minimumSize: const Size.fromHeight(48),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
         ),
 
         const SizedBox(height: 24),
@@ -3943,6 +3972,70 @@ class _PaymentModalSheetState extends State<PaymentModalSheet> {
       ),
     );
   }
+}
+
+/// Fonction utilitaire pour générer et partager le rapport financier au format PDF
+Future<void> _genererEtPartagerRapportPdf({
+  required String cagnoteName,
+  required double targetAmount,
+  required double totalCollected,
+  required List<dynamic> members,
+  required List<dynamic> paidList,
+}) async {
+  final pdf = pw.Document();
+
+  pdf.addPage(
+    pw.Page(
+      pageFormat: pw.PdfPageFormat.a4,
+      build: (pw.Context context) {
+        return pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text('KOTA - Rapport Financier', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold, color: pw.PdfColors.green800)),
+                  pw.Text('Date: ${DateFormat('dd/MM/yyyy').format(DateTime.now())}', style: const pw.TextStyle(fontSize: 12)),
+                ],
+              ),
+            ),
+            pw.SizedBox(height: 16),
+            pw.Text('Cagnotte : $cagnoteName', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 8),
+            pw.Text('Objectif financier : ${targetAmount.toInt()} FCFA'),
+            pw.Text('Total collecté : ${totalCollected.toInt()} FCFA'),
+            pw.Text('Membres totaux : ${members.length}'),
+            pw.Text('Membres à jour (Payés) : ${paidList.length}'),
+            pw.SizedBox(height: 24),
+            pw.Divider(),
+            pw.SizedBox(height: 12),
+            pw.Text('Liste des participants', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 8),
+            pw.Table.fromTextArray(
+              headers: ['Membre ID', 'Statut de Paiement'],
+              data: members.map((m) {
+                final isPaid = paidList.contains(m.toString());
+                return [m.toString(), isPaid ? 'PAYÉ' : 'EN RETARD'];
+              }).toList(),
+              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: pw.PdfColors.white),
+              headerDecoration: const pw.BoxDecoration(color: pw.PdfColor.fromInt(0xFF0B5C3F)),
+              cellHeight: 25,
+              cellAlignments: {0: pw.Alignment.centerLeft, 1: pw.Alignment.center},
+            ),
+            pw.Spacer(),
+            pw.Divider(),
+            pw.Center(
+              child: pw.Text('Généré par KOTA • Gestion de Tontines & Cagnottes', style: const pw.TextStyle(fontSize: 10, color: pw.PdfColors.grey700)),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+
+  await Printing.sharePdf(bytes: await pdf.save(), filename: 'Rapport_${cagnoteName.replaceAll(' ', '_')}.pdf');
 }
 
 
